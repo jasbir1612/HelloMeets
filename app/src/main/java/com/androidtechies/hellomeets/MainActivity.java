@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startChatHead(){
         startService(new Intent(MainActivity.this, ChatHeadService.class));
-        Intent i = new Intent(this, MyDialog.class);
+        Intent i = new Intent(this, WebActivity.class);
 //        i.putExtra("url", str);
 //        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();

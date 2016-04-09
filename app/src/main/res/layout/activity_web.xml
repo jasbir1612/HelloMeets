@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    android:orientation="vertical" >
 
+    tools:context="com.androidtechies.hellomeets.WebActivity">
     <View android:layout_width="match_parent"
         android:layout_height="60dp"
         android:clickable="true"
         android:id="@+id/dialog_top"
         />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dialog_top">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOad"
-            android:id="@+id/load"
-            android:layout_centerHorizontal="true"/>
+            android:id="@+id/layout"
+            android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnload"
+            android:text="load"
+            android:layout_weight="1"
+            />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="tabs"
+                android:id="@+id/btntab"/>
+        </LinearLayout>
         <WebView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/webview"
-            android:layout_below="@+id/load"
-            >
-
-        </WebView>
+            android:layout_below="@+id/layout"
+            android:id="@+id/webview"></WebView>
 
     </RelativeLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

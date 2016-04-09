@@ -357,7 +357,7 @@ public class ChatHeadService extends Service {
         if(MyDialog.active){
             MyDialog.myDialog.finish();
         }else{
-            Intent it = new Intent(this,MyDialog.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent it = new Intent(this,WebActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(it);
         }
 

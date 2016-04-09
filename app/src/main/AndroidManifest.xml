@@ -29,7 +29,14 @@
 
         <service android:name=".ChatHeadService" />
 
-        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".WebActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
+                <data android:scheme="http"></data>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
