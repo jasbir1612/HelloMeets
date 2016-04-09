@@ -8,7 +8,7 @@ import android.os.Build;
 import android.provider.Settings;
 
 public class Utils {
-    public static String LogTag = "henrytest";
+    public static String LogTag = "Jasbir";
     public static String EXTRA_MSG = "extra_msg";
 
 

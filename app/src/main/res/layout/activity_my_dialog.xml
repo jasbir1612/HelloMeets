@@ -28,6 +28,7 @@
                 android:textColor="@android:color/black"
                 android:inputType="textUri"
                 android:singleLine="true"
+                android:text="http://"
                 />
             <Button
                 android:layout_width="0dp"

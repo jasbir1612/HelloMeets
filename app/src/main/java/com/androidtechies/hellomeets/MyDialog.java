@@ -32,6 +32,8 @@ public class MyDialog extends Activity implements View.OnClickListener, AdapterV
     EditText edt;
     Button btn;
     View top;
+    String add;
+    public int pos;
     public static final String Default = "N/A";
 
     @Override
@@ -44,15 +46,30 @@ public class MyDialog extends Activity implements View.OnClickListener, AdapterV
         linkList = (ListView) findViewById(R.id.linklist);
         btn = (Button)findViewById(R.id.btn_link);
         edt = (EditText) findViewById(R.id.et_link);
-
+//        add = getIntent().getStringExtra("add");
+        SharedPreferences sharedpreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        add = sharedpreferences.getString("add", null);
         btn.setOnClickListener(this);
-
+        editor.remove("add");
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         linkList.setAdapter(arrayAdapter);
         top = (View)findViewById(R.id.dialog_top);
         myDialog = MyDialog.this;
+        if(add!=null) {
+            list.add(add);
+        }
+        arrayAdapter.notifyDataSetChanged();
+
         linkList.setOnItemClickListener(this);
+
+        top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -86,12 +103,16 @@ public class MyDialog extends Activity implements View.OnClickListener, AdapterV
         list.add(link);
         arrayAdapter.notifyDataSetChanged();
         edt.setText("");
+        Intent i = new Intent(MyDialog.this, WebActivity.class);
+        i.putExtra("url", list.get(pos));
+        startActivity(i);
 
 
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        this.pos = position;
         Intent i = new Intent(MyDialog.this, WebActivity.class);
         i.putExtra("url", list.get(position));
         startActivity(i);
