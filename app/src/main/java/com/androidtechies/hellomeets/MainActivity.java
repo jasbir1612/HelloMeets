@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    private void startChatHead(){
+    public void startChatHead(){
         startService(new Intent(MainActivity.this, ChatHeadService.class));
         Intent i = new Intent(this, WebActivity.class);
 //        i.putExtra("url", str);

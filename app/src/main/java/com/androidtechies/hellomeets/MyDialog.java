@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;
@@ -51,16 +52,18 @@ public class MyDialog extends Activity implements View.OnClickListener, AdapterV
         SharedPreferences.Editor editor = sharedpreferences.edit();
         add = sharedpreferences.getString("add", null);
         btn.setOnClickListener(this);
-        editor.remove("add");
-
+        Log.d(Utils.LogTag, ""+add);
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         linkList.setAdapter(arrayAdapter);
         top = (View)findViewById(R.id.dialog_top);
         myDialog = MyDialog.this;
         if(add!=null) {
             list.add(add);
+            arrayAdapter.notifyDataSetChanged();
         }
-        arrayAdapter.notifyDataSetChanged();
+        editor.remove("add");
+        editor.commit();
+
 
         linkList.setOnItemClickListener(this);
 

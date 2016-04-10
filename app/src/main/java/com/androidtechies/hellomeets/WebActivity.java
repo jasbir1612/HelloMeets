@@ -1,14 +1,19 @@
 package com.androidtechies.hellomeets;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -36,6 +41,7 @@ public class WebActivity extends AppCompatActivity {
         load = (Button) findViewById(R.id.btnload);
         webView = (WebView) findViewById(R.id.webview);
         view = (View) findViewById(R.id.dialog_top);
+        startService(new Intent(WebActivity.this, ChatHeadService.class));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,8 +77,26 @@ public class WebActivity extends AppCompatActivity {
             }
         }
 
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                if (dialog.isShowing()) {
+//                    dialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+
+
+
+        final WebViewClient webViewClient = new WebViewClient() {
+
+                        @Override
             public void onPageFinished(WebView view, String url) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
@@ -84,7 +108,42 @@ public class WebActivity extends AppCompatActivity {
                 view.loadUrl(url);
                 return true;
             }
-        });
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                WebResourceResponse response = null;
+                if ("GET".equals(request.getMethod())) {
+                    try {
+                        response = getWebResponse(view.getContext().getApplicationContext(), request.getUrl().toString());
+                    } catch (Exception e) {
+                        Log.e(Utils.LogTag, "Error while overriding getting web response", e);
+                    }
+                }
+                return response;
+            }
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                WebResourceResponse response = null;
+                try {
+                    response = getWebResponse(view.getContext().getApplicationContext(), url);
+                } catch (Exception e) {
+                    Log.e(Utils.LogTag, "Error while overriding getting web response", e);
+                }
+                return response;
+            }
+
+            WebResourceResponse getWebResponse(Context context, String url) {
+                // YOUR IMPLEMENTATION that will save resource located at passed url
+                return null;
+            }
+        };
+        webView.setWebViewClient(webViewClient);
+
+
+
 
         webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
@@ -102,9 +161,13 @@ public class WebActivity extends AppCompatActivity {
                 Intent i = new Intent(WebActivity.this, MyDialog.class);
                 SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("add", link);
-                editor.putString("add", URL);
-                editor.apply();
+                if(link!=null) {
+                    editor.putString("add", link);
+                }
+                if(URL!=null) {
+                    editor.putString("add", URL);
+                }
+                editor.commit();
                 if(link!=null||URL!=null)
                     Toast.makeText(WebActivity.this, "Link added Succesfully", Toast.LENGTH_SHORT).show();
                 else{
